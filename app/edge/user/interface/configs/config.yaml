@@ -1,0 +1,13 @@
+server:
+  http:
+    addr: 0.0.0.0:8000
+    timeout: 3s
+data:
+  redis:
+    addr: 172.16.20.198:31971
+    password: ""
+    dial_timeout: 1s
+    read_timeout: 0.4s
+    write_timeout: 0.6s
+
+

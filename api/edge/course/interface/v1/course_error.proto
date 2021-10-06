@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package api.edge.course.interface.v1;
+
+import "errors/errors.proto";
+
+option go_package = "microservice/api/edge/course/interface/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.edge.course.interface.v1";
+
+enum CourseEdgeInterfaceErrorReason {
+  option (errors.default_code) = 500;
+
+  AUTH_FAIL = 0 [(errors.code) = 403];
+  LIST_COURSES_FAIL = 1 [(errors.code) = 404];
+  LIST_TEACHER_FAIL = 2 [(errors.code) = 404];
+}

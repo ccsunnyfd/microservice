@@ -1,0 +1,10 @@
+server:
+  http:
+    addr: 0.0.0.0:8001
+    timeout: 3s
+data:
+  cache:
+    maximum_size: 50
+    expire_after_access: 60s
+    refresh_after_write: 180s
+

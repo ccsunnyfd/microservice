@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package message.v1;
+
+option go_package = "server/api/message/service/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.message.service.v1";
+option java_outer_classname = "MessageProtoV1";
+
+// The mobile service definition.
+service Mobile {
+  // Send to mobile
+  rpc SendMobile (MobileRequest) returns (MobileReply);
+}
+
+// The email service definition.
+service Email {
+  // Send to email
+  rpc SendEmail (EmailRequest) returns (EmailReply);
+}
+
+// The request message containing the mobile's info.
+message MobileRequest {
+  string mobile = 1;
+  string message = 2;
+}
+
+// The response message by sending to mobile.
+message MobileReply {
+  bool success = 1;
+}
+
+// The request message containing the email's info.
+message EmailRequest {
+  string email = 1;
+  string message = 2;
+}
+
+// The response message by sending to email.
+message EmailReply {
+  bool success = 1;
+}

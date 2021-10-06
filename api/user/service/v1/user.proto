@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package message.v1;
+
+option go_package = "server/api/user/service/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.user.service.v1";
+option java_outer_classname = "UserProtoV1";
+
+// The user service definition.
+service User {
+  rpc GetUserByID (GetUserByIDRequest) returns (GetUserByIDReply);
+  rpc GetUserByName (GetUserByNameRequest) returns (GetUserByNameReply);
+  rpc RegisterUser(RegisterUserRequest) returns(RegisterUserReply);
+}
+
+message UserInfo {
+  int64 ID = 1;
+  string username = 2;
+  string password = 3;
+  string real_name = 4;
+  string mobile = 5;
+  string email = 6;
+  bool is_teacher = 7;
+  int32 stars = 8;
+}
+
+message GetUserByIDRequest {
+  int64 ID = 1;
+}
+
+message GetUserByIDReply {
+  UserInfo user_info = 1;
+}
+
+message GetUserByNameRequest {
+  string name = 1;
+}
+
+message GetUserByNameReply {
+  UserInfo user_info = 1;
+}
+
+message RegisterUserRequest {
+  UserInfo user_info = 1;
+}
+
+message RegisterUserReply {
+  bool success = 1;
+}
+

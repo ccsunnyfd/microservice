@@ -1,0 +1,27 @@
+syntax = "proto3";
+package kratos.api;
+
+option go_package = "server/internal/conf;conf";
+
+import "google/protobuf/duration.proto";
+
+message Bootstrap {
+  Server server = 1;
+  Email email = 2;
+}
+
+message Server {
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  GRPC grpc = 1;
+}
+
+message Email {
+  string smtp = 1;
+  int64 port = 2;
+  string account = 3;
+  string password = 4;
+}

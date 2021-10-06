@@ -1,0 +1,115 @@
+syntax = "proto3";
+
+package edge.user.interface.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "api/edge/user/interface/v1;v1";
+
+
+service UserEdgeInterface {
+  rpc Register (RegisterReq) returns (RegisterReply) {
+    option (google.api.http) = {
+      post: "/v1/register"
+      body: "*"
+    };
+  }
+
+  rpc GenVerifyCode (GenVerifyCodeReq) returns (GenVerifyCodeReply) {
+    option (google.api.http) = {
+      post: "/v1/auth/code"
+      body: "*"
+    };
+  }
+
+  rpc Login (LoginReq) returns (LoginReply) {
+    option (google.api.http) = {
+      post: "/v1/login"
+      body: "*"
+    };
+  }
+
+  rpc Logout (LogoutReq) returns (LogoutReply) {
+    option (google.api.http) = {
+      post: "/v1/logout"
+      body: "*"
+    };
+  }
+
+  rpc Auth (AuthReq) returns (AuthReply) {
+    option (google.api.http) = {
+      post: "/v1/auth/verify"
+      body: "*"
+    };
+  }
+}
+
+message GenVerifyCodeReq {
+  oneof messageMedia {
+    option (validate.required) = true;
+    string mobile = 1 [(validate.rules).string.pattern = "^1[0-9]{10}$"];
+    string email = 2 [(validate.rules).string.email = true];
+  }
+}
+
+message GenVerifyCodeReply {}
+
+message User {
+  string username = 1 [(validate.rules).string = {min_len: 3, max_len: 30}];
+  string password = 2 [(validate.rules).string = {min_len: 6}];
+  oneof messageMedia {
+    option (validate.required) = true;
+    string email = 3 [(validate.rules).string.email = true];
+    string mobile = 4 [(validate.rules).string.pattern = "^1[0-9]{10}$"];
+  }
+  string real_name = 5 [(validate.rules).string = {ignore_empty: true, min_len: 3, max_len: 30}];
+  bool is_teacher = 6;
+  int32 stars = 7 [(validate.rules).int32 = {ignore_empty: true, gte: 0, lte: 5}];
+}
+
+message DBUser {
+  int64 ID = 1;
+  string username = 2;
+  string password = 3;
+  string email = 4;
+  string mobile = 5;
+  string real_name = 6;
+  bool is_teacher = 7;
+  int32 stars = 8;
+}
+
+message RegisterReq {
+  User user = 1 [(validate.rules).message.required = true];
+  string verify_code = 2 [(validate.rules).string.pattern = "(?i)^[0-9a-z]+$"];
+}
+
+message RegisterReply {
+  bool success = 1;
+}
+
+message LoginReq {
+  string username = 1 [(validate.rules).string = {min_len: 3, max_len: 30}];
+  string password = 2 [(validate.rules).string = {min_len: 6}];
+}
+
+message LoginReply {
+  string token = 1;
+}
+
+message LogoutReq {
+
+}
+
+message LogoutReply {
+
+}
+
+message AuthReq {
+  string token = 1 [(validate.rules).string.pattern = "^[0-9a-f]+$"];
+}
+
+message AuthReply {
+  bool success = 1;
+  DBUser user = 2;
+}

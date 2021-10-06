@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package api.edge.course.interface.v1;
+
+import "google/api/annotations.proto";
+//import "validate/validate.proto";
+
+option go_package = "microservice/api/edge/course/interface/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.edge.course.interface.v1";
+
+service CourseEdgeInterface {
+	rpc ListCourse (ListCourseRequest) returns (ListCourseReply) {
+    option (google.api.http) = {
+      get: "/v1/course"
+    };
+  }
+}
+
+message ListCourseRequest {
+}
+message ListCourseReply {
+  message Course {
+    message Teacher {
+      int64 ID = 1;
+      string username = 2;
+      string real_name = 3;
+      string mobile = 4;
+      string email = 5;
+      int32 stars = 6;
+    }
+    int64 ID = 1;
+    string title = 2;
+    string description = 3;
+    Teacher teacher = 4;
+  }
+  repeated Course courses = 1;
+}

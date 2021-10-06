@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package api.edge.user.interface.v1;
+
+import "errors/errors.proto";
+
+option go_package = "microservice/api/edge/user/interface/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.edge.user.interface.v1";
+
+enum UserEdgeInterfaceErrorReason {
+  option (errors.default_code) = 500;
+
+  LOGIN_FAIL = 0 [(errors.code) = 401];
+  REGISTER_FAIL = 1 [(errors.code) = 409];
+  AUTH_FAIL = 2 [(errors.code) = 403];
+}
