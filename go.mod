@@ -1,6 +1,6 @@
 module microservice
 
-go 1.15
+go 1.17
 
 require (
 	entgo.io/ent v0.9.1
