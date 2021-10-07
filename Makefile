@@ -42,7 +42,43 @@ api:
 .PHONY: build
 # build
 build:
-	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
+	make build-message
+	make build-user
+	make build-course
+	make build-apigateway
+	make build-edgeUser
+	make build-edgeCourse
+
+.PHONY: build-message
+# build-message
+build-message:
+	mkdir -p message/bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./message/bin/ ./app/message/...
+
+.PHONY: build-user
+# build-user
+build-user:
+	mkdir -p user/bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./user/bin/ ./app/user/...
+
+.PHONY: build-course
+# build-course
+build-course:
+	mkdir -p course/bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./course/bin/ ./app/course/...
+
+.PHONY: build-apigateway
+# build-apigateway
+build-apigateway:
+	mkdir -p apigateway/bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./apigateway/bin/ ./app/api-gateway/...
+
+.PHONY: build-edgeUser
+# build-edgeUser
+build-edgeUser:
+	mkdir -p edgeUser/bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./edgeUser/bin/ ./app/edge/user/...
+
+.PHONY: build-edgeCourse
+# build-edgeCourse
+build-edgeCourse:
+	mkdir -p edgeCourse/bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./edgeCourse/bin/ ./app/edge/course/...
+
 
 .PHONY: generate
 # generate
