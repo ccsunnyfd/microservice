@@ -36,5 +36,4 @@ bin/
 *.swp
 
 # smtp sensitive info
-app/message/service/configs/
 app/message/service/internal/data/email_test.go

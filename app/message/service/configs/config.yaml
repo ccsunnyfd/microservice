@@ -1,0 +1,9 @@
+server:
+  grpc:
+    addr: 0.0.0.0:10900
+    timeout: 5s
+email:
+  smtp: smtp.qq.com
+  port: 465
+  account: ${email.account}
+  password: ${email.password}

@@ -9,9 +9,6 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"microservice/app/message/service/internal/conf"
 	"os"
-	"os/exec"
-	"path/filepath"
-	"strings"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -26,16 +23,8 @@ var (
 	id, _ = os.Hostname()
 )
 
-func getAppPath() string {
-	file, _ := exec.LookPath(os.Args[0])
-	path, _ := filepath.Abs(file)
-	index := strings.LastIndex(path, string(os.PathSeparator))
-
-	return path[:index]
-}
-
 func init() {
-	flag.StringVar(&flagconf, "conf", getAppPath() + "/../../configs", "config path, eg: -conf config.yaml")
+	flag.StringVar(&flagconf, "conf", "./configs", "config path, eg: -conf config.yaml")
 }
 
 func newApp(logger log.Logger, gs *grpc.Server) *kratos.App {
