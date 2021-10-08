@@ -42,7 +42,7 @@ func NewData(logger log.Logger, cc courseV1.CourseClient, uec userEdgeV1.UserEdg
 func NewCourseServiceClient() (courseClient courseV1.CourseClient, cleanup func()) {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("127.0.0.1:10903"),
+		grpc.WithEndpoint("course-service:10903"),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
@@ -64,7 +64,7 @@ func NewUserEdgeServiceClient() (userEdgeClient userEdgeV1.UserEdgeInterfaceHTTP
 		transhttp.WithMiddleware(
 			recovery.Recovery(),
 		),
-		transhttp.WithEndpoint("127.0.0.1:8000"),
+		transhttp.WithEndpoint("user-edge-service:8000"),
 	)
 	if err != nil {
 		panic(err)
@@ -79,7 +79,7 @@ func NewUserEdgeServiceClient() (userEdgeClient userEdgeV1.UserEdgeInterfaceHTTP
 func NewUserServiceClient() (userClient userV1.UserClient, cleanup func()) {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("127.0.0.1:10901"),
+		grpc.WithEndpoint("user-service:10901"),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),

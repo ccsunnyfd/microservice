@@ -10,7 +10,7 @@ import (
 	"github.com/google/wire"
 	messageV1 "microservice/api/message/service/v1"
 	userV1 "microservice/api/user/service/v1"
-	conf2 "microservice/app/edge/user/interface/internal/conf"
+	"microservice/app/edge/user/interface/internal/conf"
 )
 
 // ProviderSet is data providers.
@@ -45,7 +45,7 @@ func NewData(logger log.Logger, rdb *redis.Client, ec messageV1.EmailClient, mc 
 	}, nil
 }
 
-func NewRedisClient(conf *conf2.Data) *redis.Client {
+func NewRedisClient(conf *conf.Data) *redis.Client {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:         conf.Redis.Addr,
 		Password:     conf.Redis.Password,
@@ -61,7 +61,7 @@ func NewRedisClient(conf *conf2.Data) *redis.Client {
 func NewEmailServiceClient() messageV1.EmailClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("127.0.0.1:10900"),
+		grpc.WithEndpoint("message-service:10900"),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
@@ -76,7 +76,7 @@ func NewEmailServiceClient() messageV1.EmailClient {
 func NewMobileServiceClient() messageV1.MobileClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("127.0.0.1:10900"),
+		grpc.WithEndpoint("message-service:10900"),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
@@ -91,7 +91,7 @@ func NewMobileServiceClient() messageV1.MobileClient {
 func NewUserServiceClient() userV1.UserClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("127.0.0.1:10901"),
+		grpc.WithEndpoint("user-service:10901"),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),

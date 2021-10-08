@@ -5,5 +5,5 @@ server:
 email:
   smtp: smtp.qq.com
   port: 465
-  account: ${email.account}
-  password: ${email.password}
+  account: ${EMAIL_ACCOUNT}
+  password: ${EMAIL_PASS}

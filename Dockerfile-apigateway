@@ -14,4 +14,4 @@ WORKDIR /app
 EXPOSE 80
 VOLUME /data/conf
 
-CMD ["./server", "-conf", "/data/conf"]
+CMD ["./server"]

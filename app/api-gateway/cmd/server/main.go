@@ -8,11 +8,11 @@ import (
 
 func main() {
 	r := gin.Default()
-	r.POST("/user/register", ReverseProxy("localhost:8000", "/v1/register"))
-	r.POST("/user/login", ReverseProxy("localhost:8000", "/v1/login"))
-	r.POST("/auth/code", ReverseProxy("localhost:8000", "/v1/auth/code"))
-	r.POST("/auth/verify", ReverseProxy("localhost:8000", "/v1/auth/verify"))
-	r.GET("/course", ReverseProxy("localhost:8001", "/v1/course"))
+	r.POST("/user/register", ReverseProxy("user-edge-service:8000", "/v1/register"))
+	r.POST("/user/login", ReverseProxy("user-edge-service:8000", "/v1/login"))
+	r.POST("/auth/code", ReverseProxy("user-edge-service:8000", "/v1/auth/code"))
+	r.POST("/auth/verify", ReverseProxy("user-edge-service:8000", "/v1/auth/verify"))
+	r.GET("/course", ReverseProxy("course-edge-service:8001", "/v1/course"))
 	r.Run(":80")
 }
 

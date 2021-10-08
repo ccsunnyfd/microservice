@@ -1,0 +1,52 @@
+version: '3'
+services:
+  message-service:
+    image: ccsunnyfd/message:1
+    volumes:
+      - "~/microservice-conf/message/:/data/conf"
+    environment:
+      EMAIL_ACCOUNT: "######"
+      EMAIL_PASS: "#######"
+
+  user-service:
+    image: ccsunnyfd/user:1
+    volumes:
+      - "~/microservice-conf/user/:/data/conf"
+    environment:
+      MYSQL_ADDR: "172.16.20.198"
+      MYSQL_PORT: "30600"
+
+  user-edge-service:
+    image: ccsunnyfd/user-edge:1
+    volumes:
+      - "~/microservice-conf/user-edge/:/data/conf"
+    links:
+      - user-service
+      - message-service
+    environment:
+      REDIS_ADDR: "172.16.20.198:31971"
+
+  course-service:
+    image: ccsunnyfd/course:1
+    volumes:
+      - "~/microservice-conf/course/:/data/conf"
+    environment:
+      MYSQL_ADDR: "172.16.20.198"
+      MYSQL_PORT: "30729"
+
+  course-edge-service:
+    image: ccsunnyfd/course-edge:1
+    volumes:
+      - "~/microservice-conf/course-edge/:/data/conf"
+    links:
+      - user-edge-service
+      - course-service
+      - user-service
+
+  api-gateway:
+    image: ccsunnyfd/api-gateway:1
+    links:
+      - user-edge-service
+      - course-edge-service
+    ports:
+      - 80:80

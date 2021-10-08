@@ -5,6 +5,6 @@ server:
 data:
   database:
     driver: mysql
-    source: root:123456@tcp(172.16.20.198:30600)/userdb?parseTime=true
+    source: root:123456@tcp(${MYSQL_ADDR}:${MYSQL_PORT})/userdb?parseTime=true
 
 

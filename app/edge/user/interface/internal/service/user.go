@@ -18,6 +18,7 @@ func (s *UserInterface) Register(ctx context.Context, req *v1.RegisterReq) (*v1.
 		Stars:     req.User.Stars,
 	}, req.VerifyCode)
 	if err != nil {
+		s.log.Errorf("register fail: %v", err)
 		return &v1.RegisterReply{
 			Success: false,
 		}, v1.ErrorRegisterFail("%s register fail", req.User.Username)
@@ -32,6 +33,7 @@ func (s *UserInterface) Login(ctx context.Context, req *v1.LoginReq) (*v1.LoginR
 		Password: req.Password,
 	})
 	if err != nil {
+		s.log.Errorf("login fail: %v", err)
 		return &v1.LoginReply{
 		}, v1.ErrorLoginFail("%s login failed", req.Username)
 	}
@@ -45,6 +47,7 @@ func (s *UserInterface) Logout(ctx context.Context, req *v1.LogoutReq) (*v1.Logo
 func (s *UserInterface) Auth(ctx context.Context, req *v1.AuthReq) (*v1.AuthReply, error) {
 	bizUser, err := s.uc.Auth(ctx, req.Token)
 	if err != nil {
+		s.log.Errorf("auth fail: %v", err)
 		return &v1.AuthReply{
 			Success: false,
 		}, v1.ErrorAuthFail("%s auth fail", req.Token)
