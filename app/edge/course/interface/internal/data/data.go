@@ -44,7 +44,7 @@ func NewData(logger log.Logger, cc courseV1.CourseClient, uec userEdgeV1.UserEdg
 func NewCourseServiceClient(conf *conf.External_Course) (courseClient courseV1.CourseClient, cleanup func()) {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
+		grpc.WithEndpoint(conf.GetAddr() + ":" + strconv.Itoa(int(conf.GetPort()))),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
@@ -66,7 +66,7 @@ func NewUserEdgeServiceClient(conf *conf.External_UserEdge) (userEdgeClient user
 		transhttp.WithMiddleware(
 			recovery.Recovery(),
 		),
-		transhttp.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
+		transhttp.WithEndpoint(conf.GetAddr() + ":" + strconv.Itoa(int(conf.GetPort()))),
 	)
 	if err != nil {
 		panic(err)
@@ -81,7 +81,7 @@ func NewUserEdgeServiceClient(conf *conf.External_UserEdge) (userEdgeClient user
 func NewUserServiceClient(conf *conf.External_User) (userClient userV1.UserClient, cleanup func()) {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
+		grpc.WithEndpoint(conf.GetAddr() + ":" + strconv.Itoa(int(conf.GetPort()))),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),

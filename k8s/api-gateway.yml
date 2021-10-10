@@ -5,10 +5,9 @@ metadata:
   labels:
     app: api-gateway
 spec:
-  type: NodeIP
+  type: NodePort
   selector:
-    matchLabels:
-      app: api-gateway
+    app: api-gateway
   ports:
     - name: api-gateway
       port: 80

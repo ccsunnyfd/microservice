@@ -7,8 +7,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    matchLabels:
-      app: course
+    app: course
   ports:
   - name: course-edge
     port: 8001
@@ -20,10 +19,14 @@ metadata:
   name: course-config
 data:
   config.yaml: |
-    server.grpc.addr=0.0.0.0:10903
-    server.grpc.timeout=1s
-    data.database.driver=mysql
-    data.database.source=root:123456@tcp(${MYSQL_ADDR}:${MYSQL_PORT})/coursedb?parseTime=true
+    server:
+      grpc:
+        addr: 0.0.0.0:10903
+        timeout: 1s
+    data:
+      database:
+        driver: mysql
+        source: root:123456@tcp(${MYSQL_ADDR}:${MYSQL_PORT})/coursedb?parseTime=true
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -31,17 +34,25 @@ metadata:
   name: course-edge-config
 data:
   config.yaml: |
-    server.http.addr=0.0.0.0:8001
-    server.http.timeout=3s
-    data.cache.maximum_size=50
-    data.cache.expire_after_access=60s
-    data.cache.refresh_after_write=180s
-    external.course_service.addr=localhost
-    external.course_service.port=10903
-    external.user_service.addr=user-service
-    external.user_service.port=10901
-    external.user_edge_service.addr=user-service
-    external.user_edge_service.port=8000
+    server:
+      http:
+        addr: 0.0.0.0:8001
+        timeout: 3s
+    data:
+      cache:
+        maximum_size: 50
+        expire_after_access: 60s
+        refresh_after_write: 180s
+    external:
+      course_service:
+        addr: localhost
+        port: 10903
+      user_service:
+        addr: user-service
+        port: 10901
+      user_edge_service:
+        addr: user-service
+        port: 8000
 ---
 apiVersion: apps/v1
 kind: Deployment

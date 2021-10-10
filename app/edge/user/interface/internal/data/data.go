@@ -62,7 +62,7 @@ func NewRedisClient(conf *conf.Data) *redis.Client {
 func NewEmailServiceClient(conf *conf.External_Message) messageV1.EmailClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
+		grpc.WithEndpoint(conf.GetAddr() + ":" + strconv.Itoa(int(conf.GetPort()))),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
@@ -77,7 +77,7 @@ func NewEmailServiceClient(conf *conf.External_Message) messageV1.EmailClient {
 func NewMobileServiceClient(conf *conf.External_Message) messageV1.MobileClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
+		grpc.WithEndpoint(conf.GetAddr() + ":" + strconv.Itoa(int(conf.GetPort()))),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
@@ -92,7 +92,7 @@ func NewMobileServiceClient(conf *conf.External_Message) messageV1.MobileClient 
 func NewUserServiceClient(conf *conf.External_User) userV1.UserClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
+		grpc.WithEndpoint(conf.GetAddr() + ":" + strconv.Itoa(int(conf.GetPort()))),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),

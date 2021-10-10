@@ -7,7 +7,6 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    matchLabels:
       app: message
   ports:
   - port: 10900
@@ -19,12 +18,15 @@ metadata:
   name: message-config
 data:
   config.yaml: |
-    server.grpc.addr=0.0.0.0:10900
-    server.grpc.timeout=5s
-    email.smtp=smtp.qq.com
-    email.port=465
-    email.account=${EMAIL_ACCOUNT}
-    email.password=${EMAIL_PASS}
+    server:
+      grpc:
+        addr: 0.0.0.0:10900
+        timeout: 5s
+    email:
+      smtp: smtp.qq.com
+      port: 465
+      account: ${EMAIL_ACCOUNT}
+      password: ${EMAIL_PASS}
 ---
 apiVersion: apps/v1
 kind: Deployment

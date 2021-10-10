@@ -7,7 +7,6 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    matchLabels:
       app: user
   ports:
   - name: user
@@ -23,10 +22,14 @@ metadata:
   name: user-config
 data:
   config.yaml: |
-    server.grpc.addr=0.0.0.0:10901
-    server.grpc.timeout=1s
-    data.database.driver=mysql
-    data.database.source=root:123456@tcp(${MYSQL_ADDR}:${MYSQL_PORT})/userdb?parseTime=true
+    server:
+      grpc:
+        addr: 0.0.0.0:10901
+        timeout: 1s
+    data:
+      database:
+        driver: mysql
+        source: root:123456@tcp(${MYSQL_ADDR}:${MYSQL_PORT})/userdb?parseTime=true
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -34,17 +37,24 @@ metadata:
   name: user-edge-config
 data:
   config.yaml: |
-    server.http.addr=0.0.0.0:8000
-    server.http.timeout=5s
-    data.redis.addr=${REDIS_ADDR}
-    data.redis.password=""
-    data.redis.dial_timeout=1s
-    data.redis.read_timeout=0.4s
-    data.redis.write_timeout=0.6s
-    external.message_service.addr=message-service
-    external.message_service.port=10900
-    external.user_service.addr=localhost
-    external.user_service.port=10901
+    server:
+      http:
+        addr: 0.0.0.0:8000
+        timeout: 5s
+    data:
+      redis:
+        addr: ${REDIS_ADDR}
+        password: ""
+        dial_timeout: 1s
+        read_timeout: 0.4s
+        write_timeout: 0.6s
+    external:
+      message_service:
+        addr: message-service
+        port: 10900
+      user_service:
+        addr: localhost
+        port: 10901
 ---
 apiVersion: apps/v1
 kind: Deployment
