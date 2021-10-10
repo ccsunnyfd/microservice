@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: message-service
+  labels:
+    app: message
+spec:
+  type: ClusterIP
+  selector:
+    matchLabels:
+      app: message
+  ports:
+  - port: 10900
+    targetPort: 10900
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: message-config
+data:
+  config.yaml: |
+    server.grpc.addr=0.0.0.0:10900
+    server.grpc.timeout=5s
+    email.smtp=smtp.qq.com
+    email.port=465
+    email.account=${EMAIL_ACCOUNT}
+    email.password=${EMAIL_PASS}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-service
+  labels:
+    app: message
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: message
+  template:
+    metadata:
+      labels:
+        app: message
+    spec:
+      containers:
+        - name: message
+          image: 193.168.1.211:8082/microservice/message:1
+          env:
+            - name: "EMAIL_ACCOUNT"
+              value: "######"
+            - name: "EMAIL_PASS"
+              value: "######"
+          ports:
+            - name: message
+              containerPort: 10900
+          volumeMounts:
+            - name: message-config
+              mountPath: "/data/conf"
+              readOnly: true
+      volumes:
+        - name: message-config
+          configMap:
+            name: message-config
+            items:
+              - key: "config.yaml"
+                path: "config.yaml"

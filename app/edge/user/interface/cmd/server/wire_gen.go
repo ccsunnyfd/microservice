@@ -19,11 +19,11 @@ import (
 // Injectors from wire.go:
 
 // initApp init kratos application.
-func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
+func initApp(confServer *conf.Server, confData *conf.Data, external_User *conf.External_User, external_Message *conf.External_Message, logger log.Logger) (*kratos.App, func(), error) {
 	client := data.NewRedisClient(confData)
-	emailClient := data.NewEmailServiceClient()
-	mobileClient := data.NewMobileServiceClient()
-	userClient := data.NewUserServiceClient()
+	emailClient := data.NewEmailServiceClient(external_Message)
+	mobileClient := data.NewMobileServiceClient(external_Message)
+	userClient := data.NewUserServiceClient(external_User)
 	dataData, cleanup, err := data.NewData(logger, client, emailClient, mobileClient, userClient)
 	if err != nil {
 		return nil, nil, err

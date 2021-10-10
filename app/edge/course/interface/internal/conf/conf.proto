@@ -8,6 +8,25 @@ import "google/protobuf/duration.proto";
 message Bootstrap {
   Server server = 1;
   Data data = 2;
+  External external = 3;
+}
+
+message External {
+  message Course {
+    string addr = 1;
+    int64 port = 2;
+  }
+  message User {
+    string addr = 1;
+    int64 port = 2;
+  }
+  message User_edge {
+    string addr = 1;
+    int64 port = 2;
+  }
+  Course course_service = 1;
+  User user_service = 2;
+  User_edge user_edge_service = 3;
 }
 
 message Server {

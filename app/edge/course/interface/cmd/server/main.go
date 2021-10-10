@@ -66,7 +66,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := initApp(bc.Server, bc.Data.Cache, logger)
+	app, cleanup, err := initApp(bc.Server, bc.Data.Cache, bc.External.GetCourseService(), bc.External.GetUserService(), bc.External.GetUserEdgeService(), logger)
 	if err != nil {
 		panic(err)
 	}

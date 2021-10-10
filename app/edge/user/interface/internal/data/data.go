@@ -11,6 +11,7 @@ import (
 	messageV1 "microservice/api/message/service/v1"
 	userV1 "microservice/api/user/service/v1"
 	"microservice/app/edge/user/interface/internal/conf"
+	"strconv"
 )
 
 // ProviderSet is data providers.
@@ -58,10 +59,10 @@ func NewRedisClient(conf *conf.Data) *redis.Client {
 	return rdb
 }
 
-func NewEmailServiceClient() messageV1.EmailClient {
+func NewEmailServiceClient(conf *conf.External_Message) messageV1.EmailClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("message-service:10900"),
+		grpc.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
@@ -73,10 +74,10 @@ func NewEmailServiceClient() messageV1.EmailClient {
 	return messageV1.NewEmailClient(conn)
 }
 
-func NewMobileServiceClient() messageV1.MobileClient {
+func NewMobileServiceClient(conf *conf.External_Message) messageV1.MobileClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("message-service:10900"),
+		grpc.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
@@ -88,10 +89,10 @@ func NewMobileServiceClient() messageV1.MobileClient {
 	return messageV1.NewMobileClient(conn)
 }
 
-func NewUserServiceClient() userV1.UserClient {
+func NewUserServiceClient(conf *conf.External_User) userV1.UserClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("user-service:10901"),
+		grpc.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),

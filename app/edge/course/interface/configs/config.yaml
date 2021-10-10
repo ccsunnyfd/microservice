@@ -7,4 +7,13 @@ data:
     maximum_size: 50
     expire_after_access: 60s
     refresh_after_write: 180s
-
+external:
+  course_service:
+    addr: localhost
+    port: 10903
+  user_service:
+    addr: user-service
+    port: 10901
+  user_edge_service:
+    addr: user-service
+    port: 8000

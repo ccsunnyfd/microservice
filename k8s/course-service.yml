@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: course-service
+  labels:
+    app: course
+spec:
+  type: ClusterIP
+  selector:
+    matchLabels:
+      app: course
+  ports:
+  - name: course-edge
+    port: 8001
+    targetPort: 8001
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: course-config
+data:
+  config.yaml: |
+    server.grpc.addr=0.0.0.0:10903
+    server.grpc.timeout=1s
+    data.database.driver=mysql
+    data.database.source=root:123456@tcp(${MYSQL_ADDR}:${MYSQL_PORT})/coursedb?parseTime=true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: course-edge-config
+data:
+  config.yaml: |
+    server.http.addr=0.0.0.0:8001
+    server.http.timeout=3s
+    data.cache.maximum_size=50
+    data.cache.expire_after_access=60s
+    data.cache.refresh_after_write=180s
+    external.course_service.addr=localhost
+    external.course_service.port=10903
+    external.user_service.addr=user-service
+    external.user_service.port=10901
+    external.user_edge_service.addr=user-service
+    external.user_edge_service.port=8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: course-service
+  labels:
+    app: course
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: course
+  template:
+    metadata:
+      labels:
+        app: course
+    spec:
+      containers:
+        - name: course
+          image: 193.168.1.211:8082/microservice/course:1
+          env:
+            - name: "MYSQL_ADDR"
+              value: "172.16.20.198"
+            - name: "MYSQL_PORT"
+              value: "30729"
+          ports:
+            - name: course
+              containerPort: 10903
+          volumeMounts:
+            - name: course-config
+              mountPath: "/data/conf"
+              readOnly: true
+        - name: course-edge
+          image: 193.168.1.211:8082/microservice/course-edge:1
+          ports:
+            - name: course-edge
+              containerPort: 8001
+          volumeMounts:
+            - name: course-edge-config
+              mountPath: "/data/conf"
+              readOnly: true
+      volumes:
+        - name: course-config
+          configMap:
+            name: course-config
+            items:
+              - key: "config.yaml"
+                path: "config.yaml"
+        - name: course-edge-config
+          configMap:
+            name: course-edge-config
+            items:
+              - key: "config.yaml"
+                path: "config.yaml"

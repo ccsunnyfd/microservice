@@ -10,6 +10,8 @@ import (
 	courseV1 "microservice/api/course/service/v1"
 	userEdgeV1 "microservice/api/edge/user/interface/v1"
 	userV1 "microservice/api/user/service/v1"
+	"microservice/app/edge/course/interface/internal/conf"
+	"strconv"
 )
 
 // ProviderSet is data providers.
@@ -39,10 +41,10 @@ func NewData(logger log.Logger, cc courseV1.CourseClient, uec userEdgeV1.UserEdg
 	return d, nil
 }
 
-func NewCourseServiceClient() (courseClient courseV1.CourseClient, cleanup func()) {
+func NewCourseServiceClient(conf *conf.External_Course) (courseClient courseV1.CourseClient, cleanup func()) {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("course-service:10903"),
+		grpc.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
@@ -58,13 +60,13 @@ func NewCourseServiceClient() (courseClient courseV1.CourseClient, cleanup func(
 	}
 }
 
-func NewUserEdgeServiceClient() (userEdgeClient userEdgeV1.UserEdgeInterfaceHTTPClient, cleanup func()) {
+func NewUserEdgeServiceClient(conf *conf.External_UserEdge) (userEdgeClient userEdgeV1.UserEdgeInterfaceHTTPClient, cleanup func()) {
 	conn, err := transhttp.NewClient(
 		context.Background(),
 		transhttp.WithMiddleware(
 			recovery.Recovery(),
 		),
-		transhttp.WithEndpoint("user-edge-service:8000"),
+		transhttp.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
 	)
 	if err != nil {
 		panic(err)
@@ -76,10 +78,10 @@ func NewUserEdgeServiceClient() (userEdgeClient userEdgeV1.UserEdgeInterfaceHTTP
 	}
 }
 
-func NewUserServiceClient() (userClient userV1.UserClient, cleanup func()) {
+func NewUserServiceClient(conf *conf.External_User) (userClient userV1.UserClient, cleanup func()) {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("user-service:10901"),
+		grpc.WithEndpoint(conf.GetAddr() + strconv.Itoa(int(conf.GetPort()))),
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),

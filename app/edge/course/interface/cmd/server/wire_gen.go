@@ -19,10 +19,10 @@ import (
 // Injectors from wire.go:
 
 // initApp init kratos application.
-func initApp(confServer *conf.Server, data_Cache *conf.Data_Cache, logger log.Logger) (*kratos.App, func(), error) {
-	courseClient, cleanup := data.NewCourseServiceClient()
-	userEdgeInterfaceHTTPClient, cleanup2 := data.NewUserEdgeServiceClient()
-	userClient, cleanup3 := data.NewUserServiceClient()
+func initApp(confServer *conf.Server, data_Cache *conf.Data_Cache, external_Course *conf.External_Course, external_User *conf.External_User, external_UserEdge *conf.External_UserEdge, logger log.Logger) (*kratos.App, func(), error) {
+	courseClient, cleanup := data.NewCourseServiceClient(external_Course)
+	userEdgeInterfaceHTTPClient, cleanup2 := data.NewUserEdgeServiceClient(external_UserEdge)
+	userClient, cleanup3 := data.NewUserServiceClient(external_User)
 	dataData, err := data.NewData(logger, courseClient, userEdgeInterfaceHTTPClient, userClient)
 	if err != nil {
 		cleanup3()

@@ -9,5 +9,12 @@ data:
     dial_timeout: 1s
     read_timeout: 0.4s
     write_timeout: 0.6s
+external:
+  message_service:
+    addr: message-service
+    port: 10900
+  user_service:
+    addr: localhost
+    port: 10901
 
 
