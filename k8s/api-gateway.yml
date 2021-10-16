@@ -33,6 +33,7 @@ spec:
       containers:
         - name: api-gateway
           image: 193.168.1.211:8082/microservice/api-gateway:1
+          imagePullPolicy: Always
           ports:
             - name: api-gateway
               containerPort: 80

@@ -76,6 +76,7 @@ spec:
       containers:
         - name: user
           image: 193.168.1.211:8082/microservice/user:1
+          imagePullPolicy: Always
           env:
             - name: "MYSQL_ADDR"
               value: "172.16.20.198"
@@ -90,6 +91,7 @@ spec:
               readOnly: true
         - name: user-edge
           image: 193.168.1.211:8082/microservice/user-edge:1
+          imagePullPolicy: Always
           env:
             - name: "REDIS_ADDR"
               value: "172.16.20.198:31971"

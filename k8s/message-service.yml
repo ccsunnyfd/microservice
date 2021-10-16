@@ -48,6 +48,7 @@ spec:
       containers:
         - name: message
           image: 193.168.1.211:8082/microservice/message:1
+          imagePullPolicy: Always
           env:
             - name: "EMAIL_ACCOUNT"
               value: "######"
