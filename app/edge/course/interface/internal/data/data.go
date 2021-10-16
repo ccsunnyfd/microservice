@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	transhttp "github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/google/wire"
@@ -48,6 +49,7 @@ func NewCourseServiceClient(conf *conf.External_Course) (courseClient courseV1.C
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
+			tracing.Client(),
 		),
 	)
 	if err != nil {
@@ -65,6 +67,7 @@ func NewUserEdgeServiceClient(conf *conf.External_UserEdge) (userEdgeClient user
 		context.Background(),
 		transhttp.WithMiddleware(
 			recovery.Recovery(),
+			tracing.Client(),
 		),
 		transhttp.WithEndpoint(conf.GetAddr() + ":" + strconv.Itoa(int(conf.GetPort()))),
 	)
@@ -85,6 +88,7 @@ func NewUserServiceClient(conf *conf.External_User) (userClient userV1.UserClien
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
+			tracing.Client(),
 		),
 	)
 	if err != nil {

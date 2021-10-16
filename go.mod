@@ -15,7 +15,9 @@ require (
 	github.com/gorilla/handlers v1.5.1
 	github.com/kr/text v0.2.0 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
-	go.opentelemetry.io/otel v1.0.1 // indirect
+	go.opentelemetry.io/otel v1.0.1
+	go.opentelemetry.io/otel/exporters/jaeger v1.0.1
+	go.opentelemetry.io/otel/sdk v1.0.1
 	google.golang.org/genproto v0.0.0-20211001223012-bfb93cce50d9
 	google.golang.org/grpc v1.40.0
 	google.golang.org/protobuf v1.27.1

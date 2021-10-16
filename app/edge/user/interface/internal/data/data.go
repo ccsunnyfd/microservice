@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-redis/redis/extra/redisotel"
 	"github.com/go-redis/redis/v8"
@@ -66,6 +67,7 @@ func NewEmailServiceClient(conf *conf.External_Message) messageV1.EmailClient {
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
+			tracing.Client(),
 		),
 	)
 	if err != nil {
@@ -81,6 +83,7 @@ func NewMobileServiceClient(conf *conf.External_Message) messageV1.MobileClient 
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
+			tracing.Client(),
 		),
 	)
 	if err != nil {
@@ -96,6 +99,7 @@ func NewUserServiceClient(conf *conf.External_User) userV1.UserClient {
 		//grpc.WithEndpoint("discovery:///beer.cart.service"),
 		grpc.WithMiddleware(
 			recovery.Recovery(),
+			tracing.Client(),
 		),
 	)
 	if err != nil {
