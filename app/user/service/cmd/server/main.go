@@ -21,9 +21,9 @@ import (
 // go build -ldflags "-X main.Version=x.y.z"
 var (
 	// Name is the name of the compiled software.
-	Name string
+	Name = "user"
 	// Version is the version of the compiled software.
-	Version string
+	Version = "v1.0.0"
 	// flagconf is the config flag.
 	flagconf string
 
