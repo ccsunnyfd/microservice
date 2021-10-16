@@ -18,6 +18,8 @@ metadata:
   name: message-config
 data:
   config.yaml: |
+    trace:
+      endpoint: http://172.16.20.198:30050/api/traces
     server:
       grpc:
         addr: 0.0.0.0:10900

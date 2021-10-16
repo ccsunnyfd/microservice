@@ -19,6 +19,8 @@ metadata:
   name: course-config
 data:
   config.yaml: |
+    trace:
+      endpoint: http://172.16.20.198:30050/api/traces
     server:
       grpc:
         addr: 0.0.0.0:10903
@@ -34,6 +36,8 @@ metadata:
   name: course-edge-config
 data:
   config.yaml: |
+    trace:
+      endpoint: http://172.16.20.198:30050/api/traces
     server:
       http:
         addr: 0.0.0.0:8001
